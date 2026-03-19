@@ -111,7 +111,7 @@ Defender flagged and prevented it at 9:45 PM. First attempt — blocked.
 <img width="776" height="118" alt="image" src="https://github.com/user-attachments/assets/3f590292-828b-4f27-907c-f109bbb4bd9d" />
 
 
-**Detection Source - EDR**
+
 ---
 
 **Stage 2 — Second download attempt (9:50 PM)**
@@ -170,7 +170,6 @@ at 10:04 PM. Third attempt — blocked.
 <img width="1011" height="119" alt="image" src="https://github.com/user-attachments/assets/187100f9-2c0d-4ae3-9d91-458ea71ae4bf" />
 
 
-**Detection Source - EDR**
 ---
 
 ### Full timeline
@@ -234,7 +233,10 @@ investigation as a potentially compromised internal machine.
 ---
 
 <img width="800" height="400" alt="image" src="https://github.com/user-attachments/assets/47c00303-e5b8-45af-98d9-27605739e325" />
+
 ---
+
+
 **Eradication**
 
 I ran a full AV scan on the device, came back clean. Then I went 
@@ -245,6 +247,8 @@ persistence mechanisms — scheduled tasks, registry run keys,
 startup folder changes. Found nothing.
 
 <img width="800" height="496" alt="image" src="https://github.com/user-attachments/assets/d5ca758a-ad26-4d88-9590-165014b2e8f1" />
+
+---
 
 **Recovery**
 
