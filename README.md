@@ -1,7 +1,7 @@
 # SOC Investigation Lab — Blue Team Portfolio
 
 This is my personal collection of SOC investigation write-ups.
-Each one is a simulated alert I worked through myself — from the 
+Each one is a simulated alert I worked through myself, from the 
 moment the alert fired to the point I closed it. I document 
 everything the way I would in a real job. Not perfect, but honest 
 practice and I'm getting better with every case.
@@ -30,6 +30,8 @@ That changes everything. This wasn't a script that landed and
 ran automatically. There was a person on the other end making 
 decisions in real time. That's what made this one interesting 
 to investigate.
+
+<img width="1000" height="500" alt="image" src="https://github.com/user-attachments/assets/fff71f23-0f47-4193-ae37-c3f1d7a562ee" />
 
 ---
 
