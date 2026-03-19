@@ -223,7 +223,7 @@ at 10:04 PM. Third attempt — blocked.
 Once I confirmed this was real and active I moved quickly. 
 I isolated the device from the network so the attacker couldn't 
 continue operating. I disabled the `soclab` user account, revoked 
-the active RDP session, and blocked all the malicious hashes, 
+the active RDP session, and blocked all the malicious hashes,
 URLs, and both the external attacker IP and the C2 IP across 
 the environment. I also flagged `10.159.17.126` for a separate 
 investigation as a potentially compromised internal machine.
