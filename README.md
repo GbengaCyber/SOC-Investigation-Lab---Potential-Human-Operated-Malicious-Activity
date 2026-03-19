@@ -17,12 +17,14 @@ practice and I'm getting better with every case.
 **Platform:** Microsoft Defender XDR / Microsoft Sentinel  
 **Analyst:** Gbenga  
 
+<img width="900" height="400" alt="image" src="https://github.com/user-attachments/assets/51dd7eae-d82e-4e63-9484-5309ee93fa17" />
+
 ---
 
 ### What got my attention
 
 The alert came in as High severity, category Malware. But what 
-immediately stood out wasn't just the malware — it was the logon 
+immediately stood out wasn't just the malware, it was the logon 
 type. RemoteInteractive. That means RDP. Someone had logged into 
 this machine and was sitting there operating it manually.
 
@@ -31,9 +33,11 @@ ran automatically. There was a person on the other end making
 decisions in real time. That's what made this one interesting 
 to investigate.
 
+<img width="1000" height="700" alt="image" src="https://github.com/user-attachments/assets/cae5bdc5-685b-4465-9183-43063ab46e3c" />
+
 ---
 
-### First thing I did
+### Root Cause - First thing I did
 
 Before anything else I needed to confirm the logon and find out 
 where it came from. I jumped into Microsoft Defender XDR and ran 
@@ -50,7 +54,7 @@ DeviceLogonEvents
 | order by TimeGenerated desc
 ```
 
-![KQL query results showing RemoteInteractive logon on soclab device](screenshots/kql-logon-query.png)
+<img width="1000" height="600" alt="image" src="https://github.com/user-attachments/assets/10e48070-cbb2-481e-991f-d54b7a7c03ef" />
 
 The results gave me two important data points that I needed to 
 separate carefully.
