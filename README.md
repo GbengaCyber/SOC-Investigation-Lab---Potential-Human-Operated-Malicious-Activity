@@ -1,11 +1,62 @@
-# SOC Investigation Lab — Blue Team Portfolio
 
-This is my personal collection of SOC investigation write-ups.
-Each one is a simulated alert I worked through myself, from the 
-moment the alert fired to the point I closed it. I document 
-everything the way I would in a real job. 
+## Business Impact & Risk Assessment
+
+**Portfolio Summary**
+
+Investigated a High severity human-operated malicious activity alert in Microsoft Defender XDR. An attacker got in via RDP using stolen credentials and spent 31 minutes trying three different ways to deploy malware - two failed ZIP downloads and a LOLBin-based Mimikatz attempt via certutil. All three were blocked. Correctly separated two distinct remote IPs in the logs to avoid misattribution in the incident report. Identified an internal machine as a potential pivot point requiring separate investigation. No successful execution, no lateral movement, no exfiltration. Device isolated, cleaned, and restored. Honest gaps documented - including a missing detection rule for certutil -urlcache abuse.
 
 ---
+
+### Business Context
+
+This wasn't an automated infection. The logon type was RemoteInteractive — someone was physically operating this machine over RDP in real time. That means the attacker was adaptive, changing tactics twice after being blocked. The goal was credential dumping via Mimikatz. If that had worked, the attacker would have had every password on that machine and a clear path to move laterally across the network - likely ending in ransomware or full domain compromise.
+
+---
+
+### Business Impact Assessment
+
+| Impact Category | Assessment |
+|---|---|
+| Human-operated RDP access confirmed | Real person on the machine making decisions - not automated malware |
+| Three separate malware attempts in 31 minutes | Persistent adversary who adapted after each failure |
+| Mimikatz credential dump attempted | If successful — full domain credential exposure |
+| Internal pivot machine identified (10.159.17.126) | Attacker may have had a foothold inside the network before this alert |
+| No execution, no lateral movement, no exfiltration | Attack stopped at every stage before any real damage |
+
+If Mimikatz had run successfully - IBM Cost of a Data Breach 2024 puts the average cost of a credential-based breach at **$4.5M+**, including lateral movement, ransomware deployment, and recovery.
+
+---
+
+### Risk Assessment
+
+| Risk | Severity | Reason |
+|---|---|---|
+| RDP with no MFA | Critical | Stolen credentials gave full interactive access with no second barrier |
+| Human-operated attack | Critical | Adaptive attacker — changed methods twice in real time |
+| Internal pivot machine (10.159.17.126) | High | May indicate the network was already partially compromised |
+| No certutil -urlcache detection rule | High | LOLBin abuse only caught at the payload level - not at point of execution |
+| PowerShell available with no restrictions | High | Two PS instances spawned freely by a standard user |
+| No Script Block Logging | Medium | Obfuscated commands could run without visibility |
+
+---
+
+### Cost-Benefit of Preventative Controls
+
+| Control | Cost | What it prevents |
+|---|---|---|
+| MFA on RDP | ~$6/user/month via Entra ID P1 | Stolen credentials alone are useless |
+| certutil -urlcache KQL detection rule | £0 | Catches LOLBin abuse before the payload lands |
+| PowerShell Constrained Language Mode | £0 via GPO | Limits what PowerShell can do for standard accounts |
+| Script Block Logging (Event ID 4104) | £0 via GPO | Full visibility into every command run |
+| Network segmentation — restrict RDP from internet | ~£5–15K one time | Takes away the initial access vector entirely |
+| Investigate 10.159.17.126 separately | Analyst time | Closes any existing foothold in the network |
+
+**Prevention cost: -£5–15K one time plus zero-cost configuration changes**
+**Cost of a successful attack: $4.5M+ average**
+**ROI: 100:1+**
+
+---
+
 
 ## Potential Human-Operated Malicious Activity
 
