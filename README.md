@@ -44,11 +44,11 @@ If Mimikatz had run successfully - IBM Cost of a Data Breach 2024 puts the avera
 
 | Control | Cost | What it prevents |
 |---|---|---|
-| MFA on RDP | ~$6/user/month via Entra ID P1 | Stolen credentials alone are useless |
+| MFA on RDP | $6/user/month via Entra ID P1 | Stolen credentials alone are useless |
 | certutil -urlcache KQL detection rule | £0 | Catches LOLBin abuse before the payload lands |
 | PowerShell Constrained Language Mode | £0 via GPO | Limits what PowerShell can do for standard accounts |
 | Script Block Logging (Event ID 4104) | £0 via GPO | Full visibility into every command run |
-| Network segmentation — restrict RDP from internet | ~£5–15K one time | Takes away the initial access vector entirely |
+| Network segmentation — restrict RDP from internet | £5–15K one time | Takes away the initial access vector entirely |
 | Investigate 10.159.17.126 separately | Analyst time | Closes any existing foothold in the network |
 
 **Prevention cost: -£5–15K one time plus zero-cost configuration changes**
